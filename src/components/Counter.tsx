@@ -1,12 +1,14 @@
 import React, {ChangeEvent, useState} from 'react';
 import {Button} from "./Button";
 import {Input} from "./Input";
+import '../styles/styles.css'
 // Компонент Counter
 const Counter = () => {
     const [count, setCount] = useState<number>(0);
     const [startValue, setStartValue] = useState<string>('');
     const [maxValue, setMaxValue] = useState<string>('');
     const [settingsApplied, setSettingsApplied] = useState<boolean>(false)
+    const [error,setError] = useState<boolean>(false)
 
         // прибавление +1
     const increment = () => {
@@ -26,12 +28,18 @@ const Counter = () => {
 
     // читаем что ввели в инпуте для стартового значения
     const startValueChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setStartValue(e.currentTarget.value)
+        const value = e.currentTarget.value
+       setStartValue(value)
+        if(+value<0) {
+            setError(true)
+        }
     }
 
     // читаем что ввели в инпуте для макс значен
     const maxValueChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxValue(e.currentTarget.value)
+        const value = e.currentTarget.value
+        setMaxValue(value)
+        setError(Number(value) < 0);
     }
 
     // функция которая активирует нстройки счётчика
@@ -65,16 +73,25 @@ const Counter = () => {
     // };
 
 
+    // styles
+    const maxValueCount = settingsApplied && count === +maxValue ? 'maxValue' : ''
+    //
+     const incrementDisabled = settingsApplied && count === +maxValue
+
     return (
         <div>
             <div>
-                <Button callBack={increment} name={'increment'}/>
-                <span>{count}</span>
+                <Button callBack={increment} name={'increment'} disabled={incrementDisabled}/>
+                <span className={`${maxValueCount}  ${error? 'error' : ''}`}>
+                   {error ? 'incorrect value!' : count}
+                </span>
+
                 <Button callBack={reset} name={'reset'}/>
             </div>
             <div>
                 <Input value={startValue}
-                       onChange={startValueChangeHandler}/>
+                       onChange={startValueChangeHandler}
+                />
                 <Input value={maxValue}
                        onChange={maxValueChangeHandler}/>
                 <Button callBack={applySettings} name={'set'}/>
@@ -87,70 +104,3 @@ const Counter = () => {
 
 export default Counter;
 
-
-// import React, { useState, ChangeEvent } from 'react';
-// import Button from "./Button";
-// import Input from "./Input";
-//
-// export const Counter = () => {
-//     const [count, setCount] = useState(0);
-//     const [startValue, setStartValue] = useState('');
-//     const [maxValue, setMaxValue] = useState('');
-//     const [error, setError] = useState('');
-//     const [settingsApplied, setSettingsApplied] = useState(false); // Добавляем состояние для отслеживания применения настроек
-//
-//     const increment = () => {
-//         if (!settingsApplied || count < Number(maxValue)) { // Проверяем, применены ли настройки и не превышает ли текущее значение максимальное значение
-//             setCount(prevCount => prevCount + 1);
-//         }
-//     };
-//
-//     const reset = () => setCount(0);
-//
-//     const handleStartValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-//         setStartValue(e.currentTarget.value);
-//     };
-//
-//     const handleMaxValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-//         setMaxValue(e.currentTarget.value);
-//     };
-//
-//     const applySettings = () => {
-//         const start = Number(startValue);
-//         const max = Number(maxValue);
-//
-//         if (isNaN(start) || isNaN(max)) {
-//             setError('Both start value and max value must be valid numbers');
-//             return;
-//         }
-//
-//         if (max < start) {
-//             setError('Max value must be greater than or equal to start value');
-//             return;
-//         }
-//
-//         setCount(start);
-//         setSettingsApplied(true); // Устанавливаем флаг, что настройки применены
-//         setError('');
-//     };
-//
-//     return (
-//         <div>
-//             <div>
-//                 <Button callBack={increment} name={'increment'} />
-//                 <span>{count}</span>
-//                 <Button callBack={reset} name={'reset'} />
-//             </div>
-//
-//             <div>
-//                 <Input value={startValue} onChange={handleStartValueChange} placeholder="Start Value" />
-//                 <Input value={maxValue} onChange={handleMaxValueChange} placeholder="Max Value" />
-//                 <Button callBack={applySettings} name={'set'} />
-//             </div>
-//
-//             {error && <div>{error}</div>}
-//         </div>
-//     );
-// };
-//
-// export default Counter;

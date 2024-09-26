@@ -3,13 +3,14 @@ import React, {FC} from 'react';
 type ButtonType = {
     callBack: () => void;
     name: string;
+    disabled?: boolean;
 };
 
 // Компонент Button
 export const Button: FC<ButtonType> = (props) => {
-    const {callBack, name} = props
+    const {callBack, name,disabled= false} = props
     return (
-        <button onClick={callBack}>{name}</button>
+        <button onClick={callBack} disabled={disabled}>{name}</button>
     );
 };
 
@@ -18,40 +19,3 @@ export const Button: FC<ButtonType> = (props) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { FC } from 'react';
-//
-// type ButtonType = {
-//     callBack: () => void;
-//     name: string;
-// };
-//
-// export const Button: FC<ButtonType> = ({ callBack, name }) => {
-//     return (
-//         <button onClick={callBack}>{name}</button>
-//     );
-// };
-//
-// export default Button;

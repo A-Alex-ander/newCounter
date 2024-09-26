@@ -1,14 +1,16 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 
 type InputType = {
     value: string;
-    onChange: (e:ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 // Компонент Input
-    export const Input: FC<InputType> = (props) => {
- const {value,onChange} = props
+export const Input: FC<InputType> = (props) => {
+    const {value, onChange} = props
+
+
     return (
-        <input type="text" value={value} onChange={onChange} />
+        <input type="number" value={value} onChange={onChange}/>
     );
 };
 
@@ -27,24 +29,3 @@ type InputType = {
 
 
 
-
-
-
-
-
-
-// import React, { FC, ChangeEvent } from 'react';
-//
-// type InputType = {
-//     value: string;
-//     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-//     placeholder?: string;
-// };
-//
-// const Input: FC<InputType> = ({ value, onChange, placeholder }) => {
-//     return (
-//         <input type="text" value={value} onChange={onChange} placeholder={placeholder} />
-//     );
-// };
-//
-// export default Input;
